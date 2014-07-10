@@ -1,10 +1,10 @@
-O ESQUEMA DRI – DIGITAL REPOSITORY INTERFACE
-===
+#O ESQUEMA DRI – DIGITAL REPOSITORY INTERFACE
+
 
 Tradução da página: https://wiki.duraspace.org/display/DSDOC4x/DRI+Schema+Reference
 
-Referência de esquema DRI
----
+#Referência de esquema DRI
+
 
 O DRI (Digital Repository Interface) é um esquema que rege a estrutura de uma página DSpace Manakin quando codificada como um documento XML. Ela determina quais os elementos podem estar presentes no documento e a relação entre os elementos. Este documento explica a finalidade do DRI, fornece uma visão geral da arquitetura e explica os padrões de design comuns. O apêndice inclui uma referência completa para os elementos utilizados no esquema DRI, uma representação gráfica da hierarquia dos elementos e uma tabela de elementos e atributos de referência rápida.
 Índice:
@@ -53,17 +53,21 @@ O DRI (Digital Repository Interface) é um esquema que rege a estrutura de uma p
 7.27 userMeta
 7.28 value
 7.29 xref
-INTRODUÇÃO
+
+###INTRODUÇÃO
+
 Este manual descreve o Digital Repository Interface (DRI) que se aplica ao repositório digital DSpace e na interface baseada em XMLUI Manakin.O XMLUI DSpace é um sistema de UI (User Interface) abrangente. É centralizada e genérica, permitindo-lhe ser aplicada a todas as páginas DSpace, sendo eficaz para substituir o sistema de interface baseado em JSP. Sua capacidade de aplicar estilos específicos para arbitrariamente grandes conjuntos de páginas DSpace facilita significativamente a tarefa de adaptar o “look and feel” do DSpace. Isso também permite vários níveis de marcação, gerando credibilidade institucional para o repositório e coleções.
 
 O Manakin, a segunda versão do DSpace XML UI, é composto por vários componentes, escritos usando Java, XML e XSL, e é implementado em Cocoon. O centro da interface é o documento XML, que é uma representação semântica de uma página DSpace. No Manakin, o documento XML adere a um esquema chamado de Digital Repository Interface (DRI), que foi desenvolvido em conjunto com o Manakin e é o assunto deste guia. Para o restante deste guia, os termos do documento XML, documento DRI e documento serão usados de forma intercambiável.
 
 Este documento explica a finalidade do DRI, fornece uma visão geral da arquitetura e explica os padrões de design comuns. O apêndice inclui uma referência completa para os elementos utilizados no esquema DRI, uma representação gráfica da hierarquia dos elementos e uma tabela de elementos e atributos de referência rápida.
 
-O PROPÓSITO DO ESQUEMA DRI
+###O PROPÓSITO DO ESQUEMA DRI
+
 DRI é um esquema que comanda a estrutura do documento XML. Ela determina os elementos que podem estar presentes no documento e a relação dos elementos uns com os outros. Uma vez que todos os componentes Manakin geram documentos XML que aderem ao esquema DRI, o documento XML serve como camada de abstração. Dois componentes: temas e aspectos são essenciais para o funcionamento do Manakin e são brevementes descritos neste manual.
 
-O DESENVOLVIMENTO DO ESQUEMA DRI
+###O DESENVOLVIMENTO DO ESQUEMA DRI
+
 O esquema DRI foi desenvolvido para uso no Manakin. A escolha para desenvolver o nosso próprio esquema, em vez de adaptar um já existente veio depois de uma análise cuidadosa do propósito do esquema, bem como as lições aprendidas a partir de tentativas anteriores de personalização da interface DSpace. Uma vez que cada página DSpace no Manakin existe como um documento XML em algum ponto do processo, o esquema que descreve este documento tinha de ser capaz de representar estruturalmente todo o conteúdo, metadados e relações entre diferentes partes de uma página DSpace. Tinha que ser preciso o suficiente para evitar a perda de qualquer informação estrutural e ainda genérico o suficiente para permitir Temas com um certo grau de liberdade para expressar essa informação em um formato legível.
 
 Esquemas populares como XHTML sofrem com o problema de não relacionar elementos em conjunto de forma explicita. Por exemplo, se um título precede um parágrafo, o título está relacionado com o parágrafo não porque ele é codificado como tal, mas porque ele precede o elemento parágrafo. Quando tenta-se traduzir essas estruturas dentro de formatos onde esses tipos de relacionamentos são explícitos, a tradução torna-se tediosa e potencialmente problemática. Esquemas mais estruturados, como TEI ou DocBook, são de domínio específico (muito parecido com o próprio DRI) e, portanto, não é adequado para nossos propósitos.
@@ -72,26 +76,31 @@ Decidimos também que o esquema deve suportar nativamente um padrão de metadado
 
 Em última análise, optamos por desenvolver o nosso próprio esquema. Nós construímos o esquema DRI através da incorporação de outras normas, quando apropriado, como o esquema i18n do Cocoon para internacionalização, Dublin Core da DCMI e a o esquema METS da Library of Congress’s. O projeto de elementos estruturais derivou fundamentalmente do TEI , com alguns dos padrões de design de outras normas existentes, como DocBook e XHTML. Enquanto os elementos estruturais foram projetados para serem facilmente traduzidos em XHTML, eles preservam as relações semânticas para uso em linguagens mais expressivas.
 
-DRI NO MANAKIN
+###DRI NO MANAKIN
+
 O processo geral para o tratamento de uma requisição no DSpace XMLUI consiste em duas partes. A primeira parte constrói o documento XML e a segunda parte estiliza o Documento para a saída. No Manakin, as duas partes não são discretas, então são embrulhadas dentro de dois processos: Content Generation, que constrói uma representação XML da página, e Application Style, que estiliza o documento resultante. Content Generation é realizado pelo Aspect chaining, enquanto o Application Style é realizado por um tema.
 
-TEMAS
+###TEMAS
+
 Um tema é uma coleção de folhas de estilo XSL e arquivos de suporte, como imagens, estilos CSS, traduções e documentos de ajuda. As folhas de estilo XSL são aplicadas ao documento DRI para convertê-lo em um formato legível e dar-lhe estrutura e formatação visual. Os arquivos de suporte são usados ​​para fornecer a página um específico look and feel, inserir imagens e outros meios de comunicação, traduzir o conteúdo e executar outras tarefas. O formato de saída usado atualmente é XHTML e os arquivos de suporte são geralmente limitados a CSS, imagens e JavaScript. Mais formatos de saída, como PDF ou SVG podem ser adicionados no futuro.
 
 A instalação DSpace manakin pode ter vários temas associados. Quando aplicado a uma página, um tema determina a maioria do look and fell. Diferentes temas podem ser aplicados a diferentes conjuntos de páginas DSpace permitindo tanto a variedade de estilos entre as séries de páginas e a consistência dentro desses conjuntos. O arquivo de configuração xmlui.xconf determina quais temas são aplicados para as páginas DSpace (veja a seção XMLUI Configuration and Customization seção para mais informações sobre como instalar e configurar temas). Os temas podem ser configurados para aplicar-se a todas as páginas de um tipo específico, como browse-by-title, a todas as páginas de uma determinada comunidade ou uma coleção ou conjuntos de comunidades e coleções, e qualquer mistura dos dois. Eles também podem ser configurados para se aplicar a um página arbitrária ou um handle.
 
-CHAIN ASPECTS – CADEIA DE ASPECTOS
+###CHAIN ASPECTS – CADEIA DE ASPECTOS
+
 Os Aspects Manakin são arranjos de componentes Cocoon (transformadores, ações, matchers, etc) que implementam um novo conjunto de recursos acoplados para o sistema. Estes aspectos são encadeados para formar todas as características do manakin. Cinco aspectos existem na instalação padrão do manakin, cada um lida com um determinado conjunto de características do DSpace, e muito mais pode ser adicionado ao implementar recursos extras. Todos os Aspectos tem um documento DRI como entrada e também geram um documento DRI como saída. Isso permite que os aspectos sejam unidos para formar uma cadeia de Aspect. Cada aspecto da cadeia leva um documento DRI como entrada, adiciona sua própria funcionalidade, e passa o documento modificado para o próximo Aspecto na cadeia.
 
-DESIGN PATTERNS COMUNS
+###DESIGN PATTERNS COMUNS
+
 Existem vários padrões de projeto utilizados de forma consistente dentro do esquema DRI. Esta seção identifica a necessidade e descreve a implementação desses padrões. Três padrões são discutidos: questões de linguagem e de internacionalização, o atributo trio padrão ( id , n , erend ), e o uso de marcação orientada a estrutura.
 
-LOCALIZAÇÃO E INTERNACIONALIZAÇÃO
+###LOCALIZAÇÃO E INTERNACIONALIZAÇÃO
+
 Internacionalização é um componente muito importante do sistema de DRI. Ele permite que o conteúdo a ser oferecido em outras línguas com base na localidade do usuário e condicionada à disponibilidade de traduções, bem como datas atuais e moeda de forma localizada. Existem dois tipos de conteúdo: o conteúdo traduzido armazenado e exibido pelo próprio DSpace e conteúdo introduzido pelo processo de styling DRI nas transformações XSL. Ambos os tipos são tratados pelo transformador i18n do Cocoon sem levar em conta sua origem.
 
 Quando o processo de geração de conteúdo produz um documento DRI, algum do conteúdo textual pode ser marcado com i18n elementos para significar que as traduções estão disponíveis para esse conteúdo. Durante o processo de aplicação de estilo, o tema também pode introduzir um novo conteúdo textual, marcando-o com i18n tags. Como resultado, após modelos XSL do tema são aplicadas ao documento DRI, o resultado final consiste em uma página DSpace marcado no formato de apresentação escolhido (como XHTML) com i18n elementos de ambos DSpace e conteúdo XSL. Este documento final é enviado através de transformador de i18n do Cocoon que traduz o texto marcado.
 
-STANDARD ATTRIBUTE TRIPLET – PADRÃO TRIO DE ATRIBUTOS
+###STANDARD ATTRIBUTE TRIPLET – PADRÃO TRIO DE ATRIBUTOS
 
 Muitos elementos do sistema de DRI (todos os containers de nível superior, classes de caracteres e muitos outros) contém um ou vários dos três atributos padrão: id , n , e rend . Os atributos ID e n podem ser obrigatórios ou opcionais baseados no propósito do elemento, enquanto o atributo rend é sempre opcional. Os dois primeiros são usados ​​para fins de identificação, enquanto que o terceiro é utilizado como uma pitada de exibição para o passo de styling.
 
@@ -101,10 +110,12 @@ O atributo n é simplesmente o nome atribuído ao elemento e que é utilizado pa
 
 O último atributo no padrão trio é o rend. Ao contrário do id e n , o atributo rend pode consistir de vários valores de espaços delimitados e é opcional para todos os elementos que podem contê-lo. Seu objetivo é fornecer uma dica de renderização da camada intermediária do componente para estilizar o tema. Há vários casos, onde o conteúdo do atributo rend é descrito em detalhes e seu uso é incentivado. Esses casos são os elementos de ênfase hi , o elemento de divisão div, e o elemento list. Por favor, consulte o manual de Referência de Elementos para obter mais detalhes sobre eles.
 
-MARCAÇÃO ORIENTADA A ESTRUTURA
+###MARCAÇÃO ORIENTADA A ESTRUTURA
+
 O padrão de projeto final é o uso de marcação orientada a estrutura para o conteúdo transportado pelo documento XML. Uma vez gerado pela Cocoon, o documento contém dois tipos principais de informação: metadados sobre o repositório e seu conteúdo e o conteúdo real da página a ser exibida. Uma visão completa de metadados e marcação de conteúdo e sua relação com outros elementos é dada na próxima seção. Uma coisa importante a notar aqui, no entanto, é que a marcação do conteúdo é voltado para declarar explicitamente as relações estruturais entre os elementos ao invés de focar os aspectos de apresentação. Isso faz com que a marcação utilizada pelo documento seja mais semelhante ao TEI ou Docbook em vez de HTML. Por esta razão, templates XSL são utilizadas pelos temas para converter a marcação DRI estrutural para XHTML. Mesmo assim é feita uma tentativa para criar XHTML estrutural sempre que possível, deixando a apresentação inteiramente no CSS. Isso permite que o documento XML seja genérico o suficiente para representar qualquer página DSpace sem informar como ela deveria ser renderizada.
 
-VISÃO GERAL DO ESQUEMA
+###VISÃO GERAL DO ESQUEMA
+
 O documento XML DRI consiste do elemento raiz document e três elementos de nível superior que contém dois tipos principais de elementos. Os três containers de nível superior são meta, body e options. Os dois tipos de elementos que eles contêm são metadados e conteúdo, levando metadados sobre a página e os conteúdos da página, respectivamente. A Figura 1 mostra a relação entre estes seis componentes.
 
 
@@ -125,7 +136,8 @@ O elemento body contém diretamente apenas um tipo de elemento: div.O elemento d
 
 Figura 2: Todos os elementos no esquema DRI (versão 1.1).
 
-MERGE DE DOCUMENTOS DRI
+###MERGE DE DOCUMENTOS DRI
+
 Tendo descrito a estrutura do documento DRI, bem como sua função no Aspect chains do Manakin, voltaremos agora a nossa atenção para o último detalhe de seu uso: fazer merge de dois documentos em um só. Existem várias situações em que a necessidade de fundir dois documentos surge. No Manakin, por exemplo, cada aspecto é responsável por adicionar uma funcionalidade diferente para uma página DSpace. Uma vez que cada instância de uma página tem que ser um documento DRI completo, cada aspecto é confrontado com a tarefa de fundir o documento gerado com outro documento gerado (e fundido em um único documento) previamente pela execução dos aspectos. Por esta razão existem regras que descrevem os elementos que podem ser mesclados e o que acontece com seus dados e elementos filhos no processo.
 
 Ao mesclar dois documentos DRI, um é considerado o documento principal e o outro é um documento feeder que é adicionado dentro do principal. Os três container de nível superior (meta , body e options) de ambos os documentos são analisados ​​individualmente e mesclados. No caso dos elementos options e meta, as  tags filhas são pegas individualmente e são tratadas de forma diferente de seus irmãos.
@@ -136,14 +148,16 @@ Merclar os elementos options é um pouco diferente. Primeiro, os elementos list 
 
 Finalmente, os elementos meta são fundidos bem como os elementos sob o body. Os três filhos de meta - userMeta , pageMeta e objectMeta - são fundidos individualmente, adicionando o conteúdo do feeder após o conteúdo do principal.
 
-ALTERAÇÃO DE VERSÕES
+###ALTERAÇÃO DE VERSÕES
+
 O esquema DRI continuará a evoluir de acordo com as necessidades de design de interface. O atributo version do documento vai indicar qual a versão do esquema do documento está em conformidade. Na época o Manakin foi incorporado ao padrão de distribuição DSpace, a versão atual era “1.1″, porém as versões anteriores da interface Manakin podem usar a versão “1.0″.
 
-ALTERAÇÃO 1.0 – 1.1
+###ALTERAÇÃO 1.0 – 1.1
 
 Houveram grandes mudanças estruturais entre estes dois números de versão. Vários elementos foram removidos do esquema: includeSet, include, objectMeta, and object. Originalmente todos os metadados para objetos foram incluídos em linha com o documento DRI, este provou ter vários problemas e foi removido na versão 1.1 do esquema. Em vez de incluir metadados em linha, foram incluídas referências externas para os metadados. Assim um elemento reference foi adicionado juntamente com referenceSet . Estes novos elementos funcionam como suas contrapartes na versão anterior, exceto sobre referenciar metadados contidos no elemento objectMeta que se referem a metadados em arquivos externos. Os elementos repository e repositoryMeta também foram modificados de forma semelhante removendo metadados em linha e referenciando documentos de metadados externos.
 
-REFERÊNCIA DE ELEMENTOS
+###REFERÊNCIA DE ELEMENTOS
+
 Element	Attributes	Required?
 BODY	 	 
 cell	 	 
@@ -284,7 +298,9 @@ Nenhum
    </body>
   <options> ... </options>
 </document>
+
 cell
+
 Rich Text Container
 
 Elemento estrutural
