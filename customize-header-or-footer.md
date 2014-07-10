@@ -1,6 +1,6 @@
-#Customize header or footer (Manakin)
+##Customize header or footer (Manakin)
 
-###Arquivos:
+####Arquivos:
 
 [dspace-src]/xmlui/themes/[theme-dir]/template.xsl (Custom theme's stylesheet – may be named differently for custom themes)
 
